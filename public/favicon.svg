@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background & Outer Glow Gradient -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="65%">
+      <stop offset="0%" stop-color="#1e1b4b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </radialGradient>
+
+    <!-- Main Accent Gradient (Vibrant Cyan to Electric Violet) -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <!-- Hot Pulse Accent Gradient (Electric Pink to Violet) -->
+    <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="50%" stop-color="#ec4899" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+
+    <!-- Neon Glow Filter -->
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base Canvas / App Icon Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGlow)" />
+
+  <!-- Outer Protective/Decorative Frame -->
+  <rect x="56" y="56" width="400" height="400" rx="80" fill="none" stroke="url(#primaryGrad)" stroke-width="3" stroke-opacity="0.2" />
+
+  <!-- Film Reel Frame Container -->
+  <g transform="translate(0, -10)">
+    <!-- Main Outer Film Card -->
+    <rect x="96" y="116" width="320" height="280" rx="32" fill="#1e293b" stroke="url(#primaryGrad)" stroke-width="8" filter="url(#neonGlow)" />
+
+    <!-- Top & Bottom Film Strip Sprocket Holes -->
+    <!-- Top Row -->
+    <rect x="124" y="136" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="180" y="136" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="236" y="136" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="292" y="136" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="348" y="136" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+
+    <!-- Bottom Row -->
+    <rect x="124" y="356" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="180" y="356" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="236" y="356" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="292" y="356" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+    <rect x="348" y="356" width="28" height="20" rx="6" fill="#38bdf8" opacity="0.8" />
+
+    <!-- Screen Viewport Inner Area -->
+    <rect x="120" y="172" width="272" height="168" rx="16" fill="#0f172a" stroke="#334155" stroke-width="2" />
+
+    <!-- Cine Pulse Waveform + Integrated Play Button Centerpiece -->
+    <!-- Pulse Line passing through Screen -->
+    <path d="M 120 256 L 200 256 L 216 216 L 236 296 L 256 226 L 272 270 L 284 256 L 392 256" 
+          fill="none" 
+          stroke="url(#pulseGrad)" 
+          stroke-width="8" 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          filter="url(#neonGlow)" />
+
+    <!-- Glowing Play Triangle Accent Overlay -->
+    <path d="M 242 226 L 286 256 L 242 286 Z" 
+          fill="url(#primaryGrad)" 
+          opacity="0.9" 
+          filter="url(#neonGlow)" />
+  </g>
+
+  <!-- Subtle Bottom Brand Glow Line -->
+  <path d="M 160 440 L 352 440" stroke="url(#pulseGrad)" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+</svg>
