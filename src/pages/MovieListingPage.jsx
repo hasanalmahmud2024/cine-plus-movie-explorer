@@ -3,6 +3,7 @@ import SearchBar from '../components/SearchBar';
 import MovieGrid from '../components/MovieGrid';
 import MovieModal from '../components/MovieModal';
 import { fetchDiscoverMovies, searchMedia } from '../services/tmdbApi';
+import useDebounce from '../hooks/useDebounce';
 
 // Use the same fetch logic for the first page and later pages.
 const fetchTitles = (searchTerm, page) => {
@@ -12,6 +13,8 @@ const fetchTitles = (searchTerm, page) => {
 
 const MovieListingPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 400); // Wait 400ms after user stops typing
+
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
@@ -21,17 +24,16 @@ const MovieListingPage = () => {
   const [loadMoreError, setLoadMoreError] = useState('');
   const currentSearch = useRef('');
 
+  // Fetch titles when the debounced search term changes
   useEffect(() => {
     let cancelled = false;
 
     const loadMovies = async () => {
       try {
-        const results = await fetchTitles(searchTerm, 1);
-
-        // Ignore results if this search was replaced.
+        const results = await fetchTitles(debouncedSearchTerm, 1);
         if (!cancelled) setMovies(results);
-      } catch (error) {
-        console.error('Failed to load titles:', error);
+      } catch (err) {
+        console.error('Failed to load titles:', err);
         if (!cancelled) {
           setMovies([]);
           setError('Unable to load titles. Please try again.');
@@ -46,7 +48,7 @@ const MovieListingPage = () => {
     return () => {
       cancelled = true;
     };
-  }, [searchTerm]);
+  }, [debouncedSearchTerm]);
 
   const handleSearchChange = (value) => {
     currentSearch.current = value;
@@ -62,7 +64,7 @@ const MovieListingPage = () => {
   const handleLoadMore = async () => {
     if (isLoadingMore) return;
 
-    const search = searchTerm;
+    const search = debouncedSearchTerm;
     const nextPage = page + 1;
     setIsLoadingMore(true);
     setLoadMoreError('');
@@ -75,8 +77,8 @@ const MovieListingPage = () => {
         setMovies((currentMovies) => [...currentMovies, ...results]);
         setPage(nextPage);
       }
-    } catch (error) {
-      console.error('Failed to load more titles:', error);
+    } catch (err) {
+      console.error('Failed to load more titles:', err);
       if (currentSearch.current === search) {
         setLoadMoreError('Unable to load more titles. Please try again.');
       }
@@ -136,7 +138,7 @@ const MovieListingPage = () => {
       ) : (
         <div className="py-12 text-center text-gray-400">
           <p className="text-lg">
-            No titles found for &quot;{searchTerm}&quot;.
+            No titles found for &quot;{debouncedSearchTerm}&quot;.
           </p>
         </div>
       )}
