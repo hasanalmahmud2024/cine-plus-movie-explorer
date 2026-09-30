@@ -14,6 +14,7 @@ const Navbar = () => {
                 <nav className="flex items-center gap-6">
                     <NavLink
                         to="/"
+                        end
                         className={({ isActive }) =>
                             `text-sm font-semibold transition-colors ${isActive ? 'text-sky-400' : 'text-gray-300 hover:text-white'}`
                         }
