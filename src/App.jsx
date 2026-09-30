@@ -1,30 +1,23 @@
-import { useState } from 'react'
+import { Outlet } from 'react-router'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <section id="center">
+      <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+        <Navbar />
 
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+        {/* Outlet renders whichever child page matches the current URL */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
 
-
+        <Footer />
+      </div>
     </>
   )
 }
 
-export default App
+export default App;

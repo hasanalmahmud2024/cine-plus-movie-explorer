@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@theme {
+    /* Brand Backgrounds */
+    --color-brand-dark: #030712;
+    /* Deep obsidian background (gray-950) */
+    --color-brand-surface: #111827;
+    /* Card & component background (gray-900) */
+    --color-brand-border: #1f2937;
+    /* Subtle borders & dividers (gray-800) */
+
+    /* Brand Accents */
+    --color-brand-primary: #0284c7;
+    /* Sky blue primary CTA (sky-600) */
+    --color-brand-primary-hover: #0369a1;
+    /* Hover state for primary buttons */
+    --color-brand-accent: #38bdf8;
+    /* Bright cyan accent text & badges (sky-400) */
+    --color-brand-star: #fbbf24;
+    /* Gold for movie ratings (amber-400) */
+}
