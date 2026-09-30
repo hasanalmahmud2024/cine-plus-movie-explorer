@@ -30,7 +30,8 @@ const MovieListingPage = () => {
 
         // Ignore results if this search was replaced.
         if (!cancelled) setMovies(results);
-      } catch {
+      } catch (error) {
+        console.error('Failed to load titles:', error);
         if (!cancelled) {
           setMovies([]);
           setError('Unable to load titles. Please try again.');
@@ -74,7 +75,8 @@ const MovieListingPage = () => {
         setMovies((currentMovies) => [...currentMovies, ...results]);
         setPage(nextPage);
       }
-    } catch {
+    } catch (error) {
+      console.error('Failed to load more titles:', error);
       if (currentSearch.current === search) {
         setLoadMoreError('Unable to load more titles. Please try again.');
       }

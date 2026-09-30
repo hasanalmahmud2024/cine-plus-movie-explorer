@@ -1,0 +1,963 @@
+===== C:\projects\cine-pulse\src\components\Footer.jsx =====
+import { Link } from 'react-router';
+
+const Footer = () => {
+  return (
+    <footer className="border-t border-gray-800/80 bg-gray-950 py-8 text-gray-400">
+      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6 lg:px-8">
+
+        {/* Brand Copyright */}
+        <p className="text-sm">
+          © 2026 <span className="font-semibold text-white">CinePulse</span>. All rights reserved.
+        </p>
+
+        {/* Quick Links */}
+        <div className="flex items-center gap-6 text-sm">
+          <Link to="/" className="hover:text-sky-400 transition-colors">
+            Home
+          </Link>
+          <Link to="/movies" className="hover:text-sky-400 transition-colors">
+            Movies
+          </Link>
+          <Link to="/about" className="hover:text-sky-400 transition-colors">
+            About
+          </Link>
+        </div>
+
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
+
+===== C:\projects\cine-pulse\src\components\HeroBanner.jsx =====
+import { Link } from 'react-router';
+import { ArrowRight, Clapperboard } from 'lucide-react';
+
+const HeroBanner = () => {
+    return (
+        <section className="relative overflow-hidden bg-brand-dark py-20 sm:py-28 lg:py-32">
+            {/* Decorative background glow */}
+            <div
+                className="absolute left-1/2 top-0 z-0 h-75 w-150 -translate-x-1/2 rounded-full bg-brand-primary/20 blur-3xl"
+                aria-hidden="true"
+            />
+
+            <div className="relative z-10 mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
+                {/* Subtitle Badge */}
+                <span className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-surface/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-brand-accent backdrop-blur-md">
+                    <Clapperboard size={16} aria-hidden="true" />
+                    Welcome to CinePulse
+                </span>
+
+                <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl">
+                    Discover your next <br className="hidden sm:inline" />
+                    <span className="uppercase bg-linear-to-r from-sky-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                        favorite movie
+                    </span>
+                </h1>
+
+                <p className="mx-auto mt-6 max-w-2xl text-base text-gray-300 sm:text-lg">
+                    Explore thousands of movies and TV shows from around the world. Search titles, check ratings, and dive into detailed cinema metadata in seconds.
+                </p>
+
+                {/* Primary call to action */}
+                <div className="mt-8 flex justify-center gap-4">
+                    <Link
+                        to="/movies"
+                        className="group inline-flex items-center gap-2 rounded-xl bg-brand-primary px-6 py-3.5 text-base font-semibold text-white shadow-lg shadow-sky-600/30 transition-all hover:bg-brand-primary-hover hover:shadow-sky-600/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 active:scale-95"
+                    >
+                        Explore Now
+                        <ArrowRight className="transition-transform group-hover:translate-x-1" size={18} aria-hidden="true" />
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
+};
+
+export default HeroBanner;
+
+===== C:\projects\cine-pulse\src\components\Logo.jsx =====
+const Logo = () => {
+    return (
+        <div className="flex items-center gap-2.5">
+            {/* SVG Logo Icon */}
+            <img
+                src="/favicon.svg"
+                alt="CinePulse Logo"
+                className="h-9 w-9 transition-transform duration-300 hover:scale-105"
+            />
+            {/* Brand Name */}
+            <span className="text-xl font-extrabold tracking-tight text-white">
+                Cine<span className="text-sky-400">Pulse</span>
+            </span>
+        </div>
+    );
+};
+export default Logo;
+
+===== C:\projects\cine-pulse\src\components\MovieCard.jsx =====
+import { CalendarDays, Star } from 'lucide-react';
+
+const MovieCard = ({ movie, onSeeDetails }) => {
+    const title = movie.title || 'Untitled';
+
+    // TMDB dates start with the four-digit release year.
+    const releaseYear = (movie.release_date || '').slice(0, 4) || 'N/A';
+
+    // Unrated titles are normalized to null, so display a fallback.
+    const rating = Number.isFinite(movie.vote_average)
+        ? movie.vote_average.toFixed(1)
+        : 'N/A';
+
+    return (
+        <div className="group flex flex-col justify-between overflow-hidden rounded-xl border border-brand-border bg-brand-surface shadow-md transition-all duration-300 hover:-translate-y-1 hover:border-2 hover:border-brand-accent hover:shadow-lg hover:shadow-sky-500/20">
+            <div className="aspect-2/3 w-full overflow-hidden bg-gray-900">
+                <img
+                    src={movie.poster_path}
+                    alt={title}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+            </div>
+
+            {/* Details Section */}
+            <div className="flex flex-1 flex-col justify-between p-4">
+                <div>
+                    <h3 className="truncate text-base font-bold text-white transition-colors group-hover:text-brand-accent">
+                        {title}
+                    </h3>
+
+                    <div className="mt-2 flex items-center justify-between text-xs text-gray-400">
+                        <span className="flex items-center gap-1 font-semibold text-brand-star">
+                            <Star aria-hidden="true" className="h-3 w-3" />
+                            {rating}
+                        </span>
+                        <span className="flex items-center gap-1">
+                            <CalendarDays aria-hidden="true" className="h-3 w-3" />
+                            {releaseYear}
+                        </span>
+                    </div>
+                </div>
+
+                {/* Details Button */}
+                <button
+                    onClick={() => onSeeDetails(movie)}
+                    className="mt-4 w-full rounded-lg bg-brand-primary py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-primary-hover"
+                >
+                    See Details
+                </button>
+            </div>
+        </div>
+    );
+};
+
+export default MovieCard;
+
+===== C:\projects\cine-pulse\src\components\MovieGrid.jsx =====
+import MovieCard from './MovieCard';
+
+const MovieGrid = ({ movies, onSeeDetails }) => {
+    return (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 min-[900px]:grid-cols-5 lg:grid-cols-6 gap-6">
+            {movies.map((movie) => (
+                <MovieCard
+                    key={movie.id}
+                    movie={movie}
+                    onSeeDetails={onSeeDetails}
+                />
+            ))}
+        </div>
+    );
+};
+
+export default MovieGrid;
+
+===== C:\projects\cine-pulse\src\components\MovieModal.jsx =====
+import { useEffect } from 'react';
+import {
+    X,
+    Star,
+    Calendar,
+    Film,
+    Globe,
+    Users,
+    ShieldAlert,
+    TrendingUp,
+} from 'lucide-react';
+
+const MovieModal = ({ movie, onClose }) => {
+    useEffect(() => {
+        if (!movie) return;
+
+        const previousOverflow = document.body.style.overflow;
+
+        const handleKeyDown = (event) => {
+            if (event.key === 'Escape') onClose();
+        };
+
+        document.body.style.overflow = 'hidden';
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [movie, onClose]);
+
+    if (!movie) return null;
+
+    const title = movie.title || 'Untitled';
+    const releaseDate = movie.release_date || 'N/A';
+    const rating = Number.isFinite(movie.vote_average)
+        ? movie.vote_average.toFixed(1)
+        : 'N/A';
+    const voteCount = movie.vote_count ?? 0;
+    const language = movie.language || 'N/A';
+    const mediaType = movie.media_type || 'movie';
+    const genres = movie.genres || [];
+    const backdropUrl = movie.backdrop_path || movie.poster_path;
+    const originalTitle = movie.original_title || movie.original_name;
+    const popularity = Number.isFinite(movie.popularity)
+        ? Math.round(movie.popularity)
+        : null;
+    const isAdult = movie.adult === true;
+
+    return (
+        <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+            onClick={onClose}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="movie-modal-title"
+        >
+            <div
+                className="relative max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-brand-border bg-brand-surface text-white shadow-2xl"
+                onClick={(event) => event.stopPropagation()}
+            >
+                {/* Close Button */}
+                <button
+                    onClick={onClose}
+                    className="absolute right-4 top-4 z-10 flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-black/60 text-gray-300 transition-colors hover:bg-black hover:text-white"
+                    aria-label="Close modal"
+                >
+                    <X className="h-5 w-5" />
+                </button>
+
+                {/* Backdrop Banner Header Image */}
+                <div className="relative h-72 w-full overflow-hidden bg-gray-900 sm:h-96">
+                    <img
+                        src={backdropUrl}
+                        alt={title}
+                        className="h-full w-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-brand-surface via-brand-surface/40 to-transparent" />
+                </div>
+
+                {/* Content Body */}
+                <div className="relative z-10 -mt-24 p-6 pt-0 sm:p-8 sm:pt-0">
+                    <h2
+                        id="movie-modal-title"
+                        className="text-2xl font-extrabold text-white sm:text-3xl"
+                    >
+                        {title}
+                    </h2>
+
+                    {originalTitle && originalTitle !== title && (
+                        <p className="mt-0.5 text-xs italic text-gray-400">
+                            Original: {originalTitle}
+                        </p>
+                    )}
+
+                    {isAdult && (
+                        <span className="mt-2 inline-flex items-center gap-1 rounded border border-red-800 bg-red-950 px-2.5 py-1 text-xs font-bold text-red-400">
+                            <ShieldAlert className="h-3.5 w-3.5" />
+                            18+
+                        </span>
+                    )}
+
+                    {/* Genre Badges */}
+                    {genres.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {genres.map((genre) => (
+                                <span
+                                    key={genre}
+                                    className="rounded-full bg-brand-border px-3 py-1 text-xs font-medium text-gray-300"
+                                >
+                                    {genre}
+                                </span>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Key Details Metadata Grid */}
+                    <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-gray-300 sm:text-sm">
+                        <span className="flex items-center gap-1 font-semibold text-brand-star">
+                            <Star className="h-4 w-4 fill-brand-star text-brand-star" />
+                            {rating}
+                        </span>
+
+                        <span className="flex items-center gap-1 text-gray-400">
+                            <Users className="h-4 w-4" />
+                            {voteCount} votes
+                        </span>
+
+                        <span>•</span>
+
+                        <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            {releaseDate}
+                        </span>
+
+                        <span>•</span>
+
+                        <span className="flex items-center gap-1">
+                            <Globe className="h-4 w-4" />
+                            Lang: {language}
+                        </span>
+
+                        <span>•</span>
+
+                        <span className="flex items-center gap-1 rounded border border-sky-800 bg-sky-950 px-2 py-0.5 text-xs font-semibold uppercase text-brand-accent">
+                            <Film className="h-3 w-3" />
+                            {mediaType}
+                        </span>
+
+                        {popularity !== null && (
+                            <span className="flex items-center gap-1 text-gray-400">
+                                <TrendingUp className="h-4 w-4" />
+                                Popularity #{popularity}
+                            </span>
+                        )}
+                    </div>
+
+                    {/* Overview Section */}
+                    <div className="mt-6 border-t border-brand-border pt-4">
+                        <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                            Overview
+                        </h3>
+                        <p className="mt-2 text-sm leading-relaxed text-gray-300 sm:text-base">
+                            {movie.overview || 'No description available for this title.'}
+                        </p>
+                    </div>
+
+                    {/* Close Action Button */}
+                    <div className="mt-8 flex justify-end">
+                        <button
+                            onClick={onClose}
+                            className="cursor-pointer rounded-lg bg-red-600/90 px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-red-600"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default MovieModal;
+
+===== C:\projects\cine-pulse\src\components\Navbar.jsx =====
+import { Link, NavLink } from 'react-router';
+import Logo from './Logo';
+
+const Navbar = () => {
+    return (
+        <header className="sticky top-0 z-40 w-full border-b border-gray-800 bg-gray-950/80 backdrop-blur-md">
+            <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+                {/* Brand Logo Link */}
+                <Link to="/" className="transition-opacity hover:opacity-90">
+                    <Logo />
+                </Link>
+
+                {/* Navigation Links */}
+                <nav className="flex items-center gap-6">
+                    <NavLink
+                        to="/"
+                        end
+                        className={({ isActive }) =>
+                            `text-sm font-semibold transition-colors ${isActive ? 'text-sky-400' : 'text-gray-300 hover:text-white'}`
+                        }
+                    >
+                        Home
+                    </NavLink>
+
+                    <NavLink
+                        to="/movies"
+                        className={({ isActive }) =>
+                            `rounded-lg bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-sky-500 active:bg-sky-700 ${isActive ? 'ring-2 ring-sky-300 ring-offset-2 ring-offset-gray-950' : ''
+                            }`
+                        }
+                    >
+                        Explore Movies
+                    </NavLink>
+                </nav>
+            </div>
+        </header>
+    );
+};
+
+export default Navbar;
+
+===== C:\projects\cine-pulse\src\components\SearchBar.jsx =====
+import { Search, X } from 'lucide-react';
+
+const SearchBar = ({ searchTerm, setSearchTerm }) => {
+    return (
+        <div className="relative mx-auto my-8 w-full max-w-xl">
+            <div className="relative flex items-center">
+                {/* Search Icon */}
+                <Search className="absolute left-4 h-5 w-5 text-gray-400" />
+
+                {/* Input Field */}
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search for movies or TV shows..."
+                    className="w-full rounded-xl border border-brand-border bg-brand-surface py-3.5 pl-11 pr-10 text-sm text-white placeholder-gray-400 shadow-md transition-all focus:border-brand-accent focus:outline-none focus:ring-1 focus:ring-brand-accent"
+                    aria-label="Search movies or TV shows"
+                />
+
+                {/* Clear Button */}
+                {searchTerm && (
+                    <button
+                        onClick={() => setSearchTerm('')}
+                        className="absolute right-3.5 rounded-full p-1 text-gray-400 hover:text-white transition-colors"
+                        aria-label="Clear search input"
+                    >
+                        <X className="h-4 w-4" />
+                    </button>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default SearchBar;
+
+===== C:\projects\cine-pulse\src\pages\AboutPage.jsx =====
+
+const AboutPage = () => {
+  return (
+    <div>About</div>
+  )
+}
+
+export default AboutPage;
+
+===== C:\projects\cine-pulse\src\pages\HomePage.jsx =====
+import HeroBanner from "../components/HeroBanner";
+
+const HomePage = () => {
+  return (
+    <div>
+      <HeroBanner />
+    </div>
+  )
+}
+
+export default HomePage;
+
+===== C:\projects\cine-pulse\src\pages\MovieListingPage.jsx =====
+import { useEffect, useRef, useState } from 'react';
+import SearchBar from '../components/SearchBar';
+import MovieGrid from '../components/MovieGrid';
+import MovieModal from '../components/MovieModal';
+import { fetchDiscoverMovies, searchMedia } from '../services/tmdbApi';
+
+// Use the same fetch logic for the first page and later pages.
+const fetchTitles = (searchTerm, page) => {
+  const query = searchTerm.trim();
+  return query ? searchMedia(query, page) : fetchDiscoverMovies(page);
+};
+
+const MovieListingPage = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [error, setError] = useState('');
+  const [loadMoreError, setLoadMoreError] = useState('');
+  const currentSearch = useRef('');
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadMovies = async () => {
+      try {
+        const results = await fetchTitles(searchTerm, 1);
+
+        // Ignore results if this search was replaced.
+        if (!cancelled) setMovies(results);
+      } catch {
+        if (!cancelled) {
+          setMovies([]);
+          setError('Unable to load titles. Please try again.');
+        }
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+
+    loadMovies();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [searchTerm]);
+
+  const handleSearchChange = (value) => {
+    currentSearch.current = value;
+    setSearchTerm(value);
+    setMovies([]);
+    setPage(1);
+    setIsLoading(true);
+    setIsLoadingMore(false);
+    setError('');
+    setLoadMoreError('');
+  };
+
+  const handleLoadMore = async () => {
+    if (isLoadingMore) return;
+
+    const search = searchTerm;
+    const nextPage = page + 1;
+    setIsLoadingMore(true);
+    setLoadMoreError('');
+
+    try {
+      const results = await fetchTitles(search, nextPage);
+
+      // Don't add results from a search that has since changed.
+      if (currentSearch.current === search) {
+        setMovies((currentMovies) => [...currentMovies, ...results]);
+        setPage(nextPage);
+      }
+    } catch {
+      if (currentSearch.current === search) {
+        setLoadMoreError('Unable to load more titles. Please try again.');
+      }
+    } finally {
+      if (currentSearch.current === search) {
+        setIsLoadingMore(false);
+      }
+    }
+  };
+
+  return (
+    <div className="mx-auto max-w-375 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+          Explore Movies &amp; TV
+        </h2>
+        <p className="mt-2 text-sm text-gray-400">
+          Browse popular movies or search for movies and TV shows.
+        </p>
+      </div>
+
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={handleSearchChange}
+      />
+
+      {isLoading ? (
+        <div className="py-20 text-center font-medium text-brand-accent">
+          Loading titles...
+        </div>
+      ) : error ? (
+        <div className="py-12 text-center text-red-400" role="alert">
+          {error}
+        </div>
+      ) : movies.length > 0 ? (
+        <>
+          <MovieGrid
+            movies={movies}
+            onSeeDetails={setSelectedMovie}
+          />
+
+          <div className="mt-12 flex flex-col items-center gap-3">
+            {loadMoreError && (
+              <p className="text-sm text-red-400" role="alert">
+                {loadMoreError}
+              </p>
+            )}
+            <button
+              onClick={handleLoadMore}
+              disabled={isLoadingMore}
+              className="cursor-pointer rounded-xl border border-brand-border bg-brand-surface px-8 py-3 text-sm font-semibold text-white shadow-md transition-all hover:border-brand-accent hover:bg-brand-primary disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isLoadingMore ? 'Loading...' : 'Load More'}
+            </button>
+          </div>
+        </>
+      ) : (
+        <div className="py-12 text-center text-gray-400">
+          <p className="text-lg">
+            No titles found for &quot;{searchTerm}&quot;.
+          </p>
+        </div>
+      )}
+
+      <MovieModal
+        movie={selectedMovie}
+        onClose={() => setSelectedMovie(null)}
+      />
+    </div>
+  );
+};
+
+export default MovieListingPage;
+
+===== C:\projects\cine-pulse\src\services\tmdbApi.js =====
+import normalizeMedia from '../utils/normalizeMedia';
+
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const BASE_URL = (
+    import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3'
+).replace(/\/$/, '');
+
+// Let page components handle API failures so they can show an error state.
+const fetchResults = async (endpoint, params = {}) => {
+    if (!API_KEY) {
+        throw new Error('Missing TMDB API key. Set VITE_TMDB_API_KEY in your environment.');
+    }
+
+    const searchParams = new URLSearchParams({
+        api_key: API_KEY,
+        ...params,
+    });
+    const response = await fetch(`${BASE_URL}/${endpoint}?${searchParams}`);
+
+    if (!response.ok) {
+        throw new Error(`TMDB request failed with status ${response.status}.`);
+    }
+
+    const data = await response.json();
+    return data.results || [];
+};
+
+// Fetch popular movies for the catalog and its subsequent pages.
+export const fetchDiscoverMovies = async (page = 1) => {
+    const results = await fetchResults('discover/movie', {
+        sort_by: 'popularity.desc',
+        page: String(page),
+    });
+
+    return results.map((item) =>
+        normalizeMedia({ ...item, media_type: 'movie' })
+    );
+};
+
+// Search movies and TV shows; TMDB multi-search also returns people.
+export const searchMedia = async (query, page = 1) => {
+    const trimmedQuery = query?.trim();
+
+    if (!trimmedQuery) {
+        return fetchDiscoverMovies(page);
+    }
+
+    const results = await fetchResults('search/multi', {
+        query: trimmedQuery,
+        page: String(page),
+    });
+
+    return results
+        .filter((item) => item.media_type !== 'person')
+        .map(normalizeMedia);
+};
+
+===== C:\projects\cine-pulse\src\utils\genres.js =====
+const genreMap = {
+    28: "Action",
+    12: "Adventure",
+    16: "Animation",
+    35: "Comedy",
+    80: "Crime",
+    99: "Documentary",
+    18: "Drama",
+    10751: "Family",
+    14: "Fantasy",
+    36: "History",
+    27: "Horror",
+    10402: "Music",
+    9648: "Mystery",
+    10749: "Romance",
+    878: "Sci-Fi",
+    10770: "TV Movie",
+    53: "Thriller",
+    10752: "War",
+    37: "Western",
+    10759: "Action & Adventure",
+    10765: "Sci-Fi & Fantasy",
+    10768: "War & Politics",
+};
+
+export const getGenreNames = (genreIds = []) => {
+    if (!Array.isArray(genreIds) || genreIds.length === 0) return [];
+    return genreIds
+        .map((id) => genreMap[id])
+        .filter(Boolean); // Removes unmapped IDs safely
+};
+
+===== C:\projects\cine-pulse\src\utils\MockData.js =====
+const mockMovies = [
+    {
+        id: 27205,
+        title: "Inception",
+        media_type: "movie",
+        release_date: "2010-07-15",
+        poster_path: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.37,
+        overview: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    },
+    {
+        id: 66732,
+        name: "Stranger Things",
+        media_type: "tv",
+        first_air_date: "2016-07-15",
+        poster_path: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.62,
+        overview: "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.",
+    },
+    {
+        id: 155,
+        title: "The Dark Knight",
+        media_type: "movie",
+        release_date: "2008-07-16",
+        poster_path: "https://images.unsplash.com/photo-1509347528160-9a9e33742cd8?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.51,
+        overview: "When the menace known as the Joker wreaks havoc and chaos on Gotham, Batman must accept one of the greatest psychological tests of his ability to fight injustice.",
+    },
+    {
+        id: 119051,
+        name: "Wednesday",
+        media_type: "tv",
+        first_air_date: "2022-11-23",
+        poster_path: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.45,
+        overview: "A sleuthing, supernaturally infused mystery charting Wednesday Addams' years as a student at Nevermore Academy.",
+    },
+    {
+        id: 157336,
+        title: "Interstellar",
+        media_type: "movie",
+        release_date: "2014-11-05",
+        poster_path: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.42,
+        overview: "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel.",
+    },
+    {
+        id: 94605,
+        name: "Arcane",
+        media_type: "tv",
+        first_air_date: "2021-11-06",
+        poster_path: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.74,
+        overview: "Amid the party towns and oppressive underground of Piltover and Zaun, two sisters fight on opposite sides of a war between band technologies and incompatible beliefs.",
+    },
+    {
+        id: 299536,
+        title: "Avengers: Infinity War",
+        media_type: "movie",
+        release_date: "2018-04-25",
+        poster_path: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.25,
+        overview: "As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos.",
+    },
+    {
+        id: 1399,
+        name: "Game of Thrones",
+        media_type: "tv",
+        first_air_date: "2011-04-17",
+        poster_path: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.44,
+        overview: "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war.",
+    },
+    {
+        id: 550,
+        title: "Fight Club",
+        media_type: "movie",
+        release_date: "1999-10-15",
+        poster_path: "https://images.unsplash.com/photo-1509347528160-9a9e33742cd8?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.43,
+        overview: "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy.",
+    },
+    {
+        id: 82856,
+        name: "The Mandalorian",
+        media_type: "tv",
+        first_air_date: "2019-11-12",
+        poster_path: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.46,
+        overview: "After the fall of the Empire, a lone gunfighter makes his way through the outer reaches of the lawless galaxy.",
+    },
+    {
+        id: 680,
+        title: "Pulp Fiction",
+        media_type: "movie",
+        release_date: "1994-09-10",
+        poster_path: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.49,
+        overview: "A burger-loving hitman, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in four tales of violence and redemption.",
+    },
+    {
+        id: 60625,
+        name: "Rick and Morty",
+        media_type: "tv",
+        first_air_date: "2013-12-02",
+        poster_path: "https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.70,
+        overview: "Rick is a mentally-unbalanced but scientifically gifted old man who has recently reconnected with his family. He spends most of his time involving his young grandson Morty in dangerous, outlandish adventures.",
+    },
+    {
+        id: 13,
+        title: "Forrest Gump",
+        media_type: "movie",
+        release_date: "1994-06-23",
+        poster_path: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=600&auto=format&fit=crop",
+        vote_average: 8.47,
+        overview: "A man with a low IQ has accomplished great things in his life and been present during significant historic events—each time, far exceeding what anyone imagined he could do.",
+    }
+];
+
+export default mockMovies;
+
+===== C:\projects\cine-pulse\src\utils\normalizeMedia.js =====
+import { getGenreNames } from './genres';
+
+const normalizeMedia = (item) => {
+    if (!item) return null;
+
+    const isMovie = item.media_type === 'movie' || Boolean(item.title);
+    const mediaType = item.media_type || (isMovie ? 'movie' : 'tv');
+    const imageBase = import.meta.env.VITE_TMDB_IMAGE_BASE || 'https://image.tmdb.org/t/p';
+    const fallbackPoster = 'https://via.placeholder.com/500x750?text=No+Poster+Available';
+
+    const getImageUrl = (path, size) => {
+        if (!path) return null;
+        if (/^https?:\/\//i.test(path)) return path;
+
+        const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+        return `${imageBase}/${size}${normalizedPath}`;
+    };
+
+    const posterPath = getImageUrl(item.poster_path, 'w500') || fallbackPoster;
+    const backdropPath =
+        getImageUrl(item.backdrop_path, 'w1280') ||
+        getImageUrl(item.poster_path, 'w500') ||
+        fallbackPoster;
+
+    return {
+        id: item.id,
+        media_type: mediaType,
+        title: item.title || item.name || 'Untitled',
+        original_title: item.original_title || item.original_name || '',
+        overview: item.overview || 'No overview description available for this title.',
+        vote_average: Number.isFinite(item.vote_average) ? item.vote_average : null,
+        vote_count: item.vote_count ?? 0,
+        popularity: Number.isFinite(item.popularity) ? item.popularity : null,
+        adult: item.adult ?? false,
+        language: (item.original_language || '').toUpperCase(),
+        release_date: item.release_date || item.first_air_date || 'N/A',
+        genres: getGenreNames(item.genre_ids),
+        poster_path: posterPath,
+        backdrop_path: backdropPath,
+    };
+};
+
+export default normalizeMedia;
+
+===== C:\projects\cine-pulse\src\App.jsx =====
+import { Outlet } from 'react-router'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+
+function App() {
+
+  return (
+    <>
+      <div className="min-h-screen bg-gray-950 text-white flex flex-col">
+        <Navbar />
+
+        {/* Outlet renders whichever child page matches the current URL */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
+
+        <Footer />
+      </div>
+    </>
+  )
+}
+
+export default App;
+
+
+===== C:\projects\cine-pulse\src\index.css =====
+@import "tailwindcss";
+
+@theme {
+    /* Brand Backgrounds */
+    --color-brand-dark: #030712;
+    /* Deep obsidian background (gray-950) */
+    --color-brand-surface: #111827;
+    /* Card & component background (gray-900) */
+    --color-brand-border: #1f2937;
+    /* Subtle borders & dividers (gray-800) */
+
+    /* Brand Accents */
+    --color-brand-primary: #0284c7;
+    /* Sky blue primary CTA (sky-600) */
+    --color-brand-primary-hover: #0369a1;
+    /* Hover state for primary buttons */
+    --color-brand-accent: #38bdf8;
+    /* Bright cyan accent text & badges (sky-400) */
+    --color-brand-star: #fbbf24;
+}
+
+===== C:\projects\cine-pulse\src\main.jsx =====
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import { RouterProvider } from 'react-router'
+import { router } from './routes'
+
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>,
+)
+
+===== C:\projects\cine-pulse\src\routes.jsx =====
+import { createBrowserRouter } from "react-router";
+import App from "./App";
+import HomePage from "./pages/HomePage";
+import MovieListingPage from "./pages/MovieListingPage";
+import AboutPage from "./pages/AboutPage";
+
+export const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <App />,
+        children:[
+            {
+                index: true,
+                element: <HomePage/>
+            },
+            {
+                path: '/movies',
+                element: <MovieListingPage />,
+            },
+            {
+                path: '/about',
+                element: <AboutPage />,
+            },
+        ]
+    },
+]);
+
