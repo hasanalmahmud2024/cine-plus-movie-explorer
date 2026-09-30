@@ -5,6 +5,17 @@ const BASE_URL = (
     import.meta.env.VITE_TMDB_BASE_URL || 'https://api.themoviedb.org/3'
 ).replace(/\/$/, '');
 
+
+// Fetch daily trending movies & TV shows for the Home Page
+export const fetchTrending = async () => {
+    const results = await fetchResults('trending/all/day');
+
+    return results
+        .filter((item) => item.media_type !== 'person')
+        .map((item) => normalizeMedia(item));
+};
+
+
 // Let page components handle API failures so they can show an error state.
 const fetchResults = async (endpoint, params = {}) => {
     if (!API_KEY) {
