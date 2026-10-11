@@ -36,24 +36,40 @@ const fetchResults = async (endpoint, params = {}) => {
     return data.results || [];
 };
 
-// Fetch popular movies for the catalog and its subsequent pages.
-export const fetchDiscoverMovies = async (page = 1) => {
-    const results = await fetchResults('discover/movie', {
-        sort_by: 'popularity.desc',
+export const fetchDiscoverMovies = async (
+    page = 1,
+    { genre = 'all', sortBy = 'popularity.desc', language = 'all', mediaType = 'movie' } = {}
+) => {
+    // TMDB endpoint changes depending on mediaType (movie vs tv)
+    const endpoint = mediaType === 'tv' ? 'discover/tv' : 'discover/movie';
+    const effectiveSortBy =
+        mediaType === 'tv' && sortBy === 'primary_release_date.desc'
+            ? 'first_air_date.desc'
+            : sortBy;
+
+    const params = {
+        sort_by: effectiveSortBy,
         page: String(page),
-    });
+    };
+    if (genre && genre !== 'all') {
+        params.with_genres = String(genre);
+    }
+    if (language && language !== 'all') {
+        params.with_original_language = String(language);
+    }
+    const results = await fetchResults(endpoint, params);
 
     return results.map((item) =>
-        normalizeMedia({ ...item, media_type: 'movie' })
+        normalizeMedia({ ...item, media_type: mediaType })
     );
 };
 
 // Search movies and TV shows; TMDB multi-search also returns people.
-export const searchMedia = async (query, page = 1) => {
+export const searchMedia = async (query, page = 1, filters = {}) => {
     const trimmedQuery = query?.trim();
 
     if (!trimmedQuery) {
-        return fetchDiscoverMovies(page);
+        return fetchDiscoverMovies(page, filters);
     }
 
     const results = await fetchResults('search/multi', {

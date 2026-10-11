@@ -21,6 +21,14 @@ const Footer = () => {
           <Link to="/about" className="hover:text-sky-400 transition-colors">
             About
           </Link>
+          <a
+            href="https://github.com/hasanalmahmud2024/cine-plus-movie-explorer"
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-sky-400 transition-colors"
+          >
+            GitHub
+          </a>
         </div>
 
       </div>
